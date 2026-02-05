@@ -3,100 +3,205 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Request</title>
+<title>For My Olly ❤️ | Valentine's Request</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-    body {
-        background: linear-gradient(to right, #ff9a9e, #fad0c4);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        flex-direction: column;
-        text-align: center;
-        color: #fff;
-        overflow: hidden;
-    }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --primary:#ff4d6d; --secondary:#ff8fa3; --accent:#ffccd5;
+    --dark:#590d22; --light:#fff0f3; --gold:#ffd166;
+  }
 
-    h1 {
-        font-size: 3em;
-        margin-bottom: 10px;
-        text-shadow: 2px 2px 5px #ff6f91;
-    }
+  body {
+    font-family:'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ffccd5 0%, #ff8fa3 50%, #ff4d6d 100%);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:var(--dark);
+    padding:20px;
+  }
 
-    p {
-        font-size: 1.5em;
-        margin-bottom: 30px;
-        text-shadow: 1px 1px 3px #ff6f91;
-    }
+  .container {
+    max-width:900px;
+    width:100%;
+    background: rgba(255,255,255,0.95);
+    border-radius:24px;
+    box-shadow:0 20px 60px rgba(89,13,34,0.3);
+    overflow:hidden;
+    position:relative;
+    padding:30px;
+    margin:20px;
+  }
 
-    button {
-        background: #ff6f91;
-        border: none;
-        padding: 15px 30px;
-        margin: 10px;
-        font-size: 1.2em;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
-        color: #fff;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
+  .header { text-align:center; padding-bottom:20px; }
+  h1 { font-family:'Dancing Script', cursive; font-size:4rem; color:var(--primary); margin-bottom:10px; }
+  .subtitle { font-size:1.3rem; color:var(--dark); font-weight:300; margin-bottom:15px; }
 
-    button:hover {
-        transform: scale(1.1);
-        background: #ff3f6f;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-    }
+  .names { display:flex; justify-content:center; align-items:center; gap:20px; margin-top:15px; font-size:1.5rem; }
+  .name-box { background:var(--primary); color:white; padding:8px 25px; border-radius:50px; font-weight:600; box-shadow:0 4px 12px rgba(255,77,109,0.3); }
+  .name-box.lewis { background: var(--dark); }
+  .heart-connector { font-size:2rem; color:var(--primary); }
 
-    #celebration {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: none;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        background-color: rgba(0,0,0,0.7);
-        z-index: 10;
-    }
+  .content { display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-top:20px; }
+  @media(max-width:768px){ .content { grid-template-columns:1fr; } }
 
-    #celebration h1 {
-        font-size: 3em;
-        color: #FFD700;
-        text-shadow: 2px 2px 10px #ff69b4;
-    }
+  .left-panel, .right-panel {
+    background: var(--light); border-radius:20px; padding:25px;
+    box-shadow:0 8px 20px rgba(89,13,34,0.1);
+  }
 
-    video {
-        max-width: 80%;
-        border-radius: 10px;
-        margin-top: 20px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    }
+  h2 { font-family:'Dancing Script', cursive; font-size:2.2rem; color:var(--primary); margin-bottom:15px; }
+  .message { font-size:1.1rem; line-height:1.6; margin-bottom:20px; }
+  .message p { margin-bottom:12px; }
+
+  .upload-section {
+    background:white; border-radius:15px; padding:20px;
+    border:3px dashed var(--secondary); text-align:center; margin-top:20px;
+    transition:all 0.3s ease;
+  }
+  .upload-section:hover { border-color:var(--primary); transform:translateY(-5px); }
+  .upload-icon { font-size:3rem; color:var(--primary); margin-bottom:10px; }
+  .upload-btn {
+    background:var(--primary); color:white; border:none; padding:12px 30px; border-radius:50px;
+    font-size:1rem; cursor:pointer; margin-top:10px; font-weight:600; transition:all 0.3s ease;
+  }
+  .upload-btn:hover { background:var(--dark); transform:scale(1.05); }
+
+  #imagePreview { margin-top:15px; display:none; }
+  #previewImage { width:100%; max-height:300px; object-fit:contain; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.2); }
+
+  .button-container { display:flex; justify-content:center; gap:20px; margin-top:30px; flex-wrap:wrap; }
+  .response-btn {
+    padding:15px 35px; font-size:1.2rem; border:none; border-radius:50px;
+    cursor:pointer; font-weight:600; transition:all 0.3s ease;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    min-width:180px; box-shadow:0 6px 20px rgba(0,0,0,0.2);
+  }
+  .yes-btn { background: linear-gradient(to right, var(--primary), #ff758c); color:white; }
+  .yes-btn:hover { transform:translateY(-8px) scale(1.05); box-shadow:0 12px 25px rgba(255,77,109,0.4); }
+  .shy-btn { background: linear-gradient(to right, var(--secondary), #ffb3c1); color:white; }
+  .shy-btn:hover { transform:translateY(-5px) scale(1.05); box-shadow:0 10px 20px rgba(255,143,163,0.4); }
+
+  .celebration-overlay {
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    background:rgba(89,13,34,0.95); display:none; justify-content:center;
+    align-items:center; flex-direction:column; z-index:100; padding:20px; text-align:center;
+  }
+  .celebration-content {
+    background:white; border-radius:25px; padding:30px; max-width:800px; width:100%;
+    box-shadow:0 20px 50px rgba(0,0,0,0.5); animation: popIn 0.8s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+  .celebration-title { font-family:'Dancing Script', cursive; font-size:3.5rem; color:var(--primary); margin-bottom:15px; }
+  .celebration-subtitle { font-size:1.3rem; margin-bottom:20px; color:var(--dark); }
+  .celebration-image { width:100%; max-height:400px; object-fit:contain; border-radius:20px; margin:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.3); display:none; }
+
+  .default-image {
+    width:100%; max-height:400px; object-fit:contain; border-radius:20px;
+    margin:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    background:linear-gradient(45deg,var(--accent),var(--secondary));
+    display:flex; justify-content:center; align-items:center; color:white; font-size:1.2rem; font-weight:600;
+  }
+
+  .signature { margin-top:20px; font-family:'Dancing Script', cursive; font-size:2rem; color:var(--dark); text-align:right; }
+
+  @keyframes popIn { 0%{transform:scale(0.5);opacity:0;} 100%{transform:scale(1);opacity:1;} }
+
 </style>
 </head>
 <body>
 
-<h1>Hey Olga ❤️</h1>
-<p>Will you be my Valentine?</p>
-<button id="yesBtn">Yes 💖</button>
-<button onclick="alert('It’s okay 😄 Maybe next time')">Yes but shy 😅</button>
+<div class="container">
+  <div class="header">
+    <h1>For My Olly ❤️</h1>
+    <p class="subtitle">A special Valentine's request from the heart</p>
+    <div class="names">
+      <div class="name-box lewis">Lewis</div>
+      <div class="heart-connector"><i class="fas fa-heartbeat"></i></div>
+      <div class="name-box">Olly</div>
+    </div>
+  </div>
 
-<div id="celebration">
-    <h1>Yaaay! ❤️ I’m so happy!</h1>
-    <video autoplay muted loop>
-        <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+  <div class="content">
+    <div class="left-panel">
+      <h2>My Dearest Olly,</h2>
+      <div class="message">
+        <p>From the moment we met, you've brought so much joy and light into my life. Your smile brightens my darkest days, and your laughter is my favorite melody.</p>
+        <p>This Valentine's Day, I want to ask you something special. Will you make me the happiest person in the world by being my Valentine?</p>
+        <p>I promise to cherish every moment with you, to be there through thick and thin, and to always make you feel as loved as you make me feel.</p>
+        <p>With all my heart,<br>Lewis</p>
+      </div>
+
+      <div class="upload-section">
+        <div class="upload-icon"><i class="fas fa-images"></i></div>
+        <h3>Add Our Special Picture</h3>
+        <p>Upload a photo of us to make this moment unforgettable</p>
+        <input type="file" id="imageUpload" accept="image/*" style="display:none;">
+        <button class="upload-btn" id="uploadTrigger"><i class="fas fa-upload"></i> Choose Photo</button>
+        <div id="imagePreview"><img id="previewImage" src="" alt="Our photo"></div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <h2>Our Valentine's Moment</h2>
+      <p>Olly, when you click "Yes", something magical will happen! Upload a picture and it will appear in our celebration!</p>
+
+      <div class="button-container">
+        <button class="response-btn yes-btn" id="yesBtn"><i class="fas fa-heart"></i> Yes, Absolutely!</button>
+        <button class="response-btn shy-btn" id="shyBtn"><i class="fas fa-smile"></i> Yes, But Shy 😊</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="celebration-overlay" id="celebrationOverlay">
+  <div class="celebration-content">
+    <h1 class="celebration-title">Yaaay! You Said Yes! 🎉</h1>
+    <p class="celebration-subtitle">This is the best Valentine's Day ever, Olly!</p>
+    <div class="default-image" id="defaultCelebration">Our Special Moment Together ❤️</div>
+    <img class="celebration-image" id="celebrationImage" src="" alt="Our special photo">
+    <p class="celebration-subtitle">I promise to make this Valentine's Day and every day after as wonderful as you are!</p>
+    <div class="signature">With all my love, Lewis</div>
+  </div>
 </div>
 
 <script>
-document.getElementById('yesBtn').onclick = () => {
-    document.getElementById('celebration').style.display = 'flex';
-};
+const yesBtn = document.getElementById('yesBtn');
+const shyBtn = document.getElementById('shyBtn');
+const celebrationOverlay = document.getElementById('celebrationOverlay');
+const uploadTrigger = document.getElementById('uploadTrigger');
+const imageUpload = document.getElementById('imageUpload');
+const previewImage = document.getElementById('previewImage');
+const imagePreview = document.getElementById('imagePreview');
+const celebrationImage = document.getElementById('celebrationImage');
+const defaultCelebration = document.getElementById('defaultCelebration');
+
+uploadTrigger.addEventListener('click',()=> imageUpload.click());
+imageUpload.addEventListener('change',function(e){
+  const file = e.target.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      previewImage.src = ev.target.result;
+      imagePreview.style.display='block';
+      celebrationImage.src = ev.target.result;
+      celebrationImage.style.display='block';
+      defaultCelebration.style.display='none';
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+yesBtn.addEventListener('click',()=> celebrationOverlay.style.display='flex');
+shyBtn.addEventListener('click',()=>{
+  celebrationOverlay.style.display='flex';
+  document.querySelector('.celebration-title').textContent="Aww, That's So Sweet! 🥰";
+  document.querySelector('.celebration-subtitle').textContent="Even if shy, this moment is so special, Olly!";
+});
 </script>
 
 </body>
