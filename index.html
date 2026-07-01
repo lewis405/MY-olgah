@@ -1,208 +1,506 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My Olly ❤️ | Valentine's Request</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  :root {
-    --primary:#ff4d6d; --secondary:#ff8fa3; --accent:#ffccd5;
-    --dark:#590d22; --light:#fff0f3; --gold:#ffd166;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Happy 10 Months, Dolgah & Lewis</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .hidden { opacity: 0; }
+        .fade-in { animation: fadeIn 2s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        .fade-out { animation: fadeOut 1s ease forwards; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .pulse { animation: pulse 2s ease-in-out infinite; }
+        @keyframes floatUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .float-up { animation: floatUp 1.5s ease forwards; }
+        @keyframes heartBeat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } }
+        .heart-beat { animation: heartBeat 1.5s ease-in-out infinite; }
+        @keyframes shimmer { 0% { text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493; } 50% { text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493, 0 0 60px #ff1493; } 100% { text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493; } }
+        .shimmer { animation: shimmer 2s ease-in-out infinite; }
+        @keyframes typewriter { from { width: 0; } to { width: 100%; } }
+        .typewriter { overflow: hidden; white-space: nowrap; animation: typewriter 3s steps(40) forwards; }
+        @keyframes glowPulse { 0%, 100% { box-shadow: 0 0 20px rgba(255, 20, 147, 0.5); } 50% { box-shadow: 0 0 40px rgba(255, 20, 147, 0.8), 0 0 60px rgba(255, 105, 180, 0.4); } }
 
-  body {
-    font-family:'Poppins', sans-serif;
-    background: linear-gradient(135deg, #ffccd5 0%, #ff8fa3 50%, #ff4d6d 100%);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:var(--dark);
-    padding:20px;
-  }
-
-  .container {
-    max-width:900px;
-    width:100%;
-    background: rgba(255,255,255,0.95);
-    border-radius:24px;
-    box-shadow:0 20px 60px rgba(89,13,34,0.3);
-    overflow:hidden;
-    position:relative;
-    padding:30px;
-    margin:20px;
-  }
-
-  .header { text-align:center; padding-bottom:20px; }
-  h1 { font-family:'Dancing Script', cursive; font-size:4rem; color:var(--primary); margin-bottom:10px; }
-  .subtitle { font-size:1.3rem; color:var(--dark); font-weight:300; margin-bottom:15px; }
-
-  .names { display:flex; justify-content:center; align-items:center; gap:20px; margin-top:15px; font-size:1.5rem; }
-  .name-box { background:var(--primary); color:white; padding:8px 25px; border-radius:50px; font-weight:600; box-shadow:0 4px 12px rgba(255,77,109,0.3); }
-  .name-box.lewis { background: var(--dark); }
-  .heart-connector { font-size:2rem; color:var(--primary); }
-
-  .content { display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-top:20px; }
-  @media(max-width:768px){ .content { grid-template-columns:1fr; } }
-
-  .left-panel, .right-panel {
-    background: var(--light); border-radius:20px; padding:25px;
-    box-shadow:0 8px 20px rgba(89,13,34,0.1);
-  }
-
-  h2 { font-family:'Dancing Script', cursive; font-size:2.2rem; color:var(--primary); margin-bottom:15px; }
-  .message { font-size:1.1rem; line-height:1.6; margin-bottom:20px; }
-  .message p { margin-bottom:12px; }
-
-  .upload-section {
-    background:white; border-radius:15px; padding:20px;
-    border:3px dashed var(--secondary); text-align:center; margin-top:20px;
-    transition:all 0.3s ease;
-  }
-  .upload-section:hover { border-color:var(--primary); transform:translateY(-5px); }
-  .upload-icon { font-size:3rem; color:var(--primary); margin-bottom:10px; }
-  .upload-btn {
-    background:var(--primary); color:white; border:none; padding:12px 30px; border-radius:50px;
-    font-size:1rem; cursor:pointer; margin-top:10px; font-weight:600; transition:all 0.3s ease;
-  }
-  .upload-btn:hover { background:var(--dark); transform:scale(1.05); }
-
-  #imagePreview { margin-top:15px; display:none; }
-  #previewImage { width:100%; max-height:300px; object-fit:contain; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.2); }
-
-  .button-container { display:flex; justify-content:center; gap:20px; margin-top:30px; flex-wrap:wrap; }
-  .response-btn {
-    padding:15px 35px; font-size:1.2rem; border:none; border-radius:50px;
-    cursor:pointer; font-weight:600; transition:all 0.3s ease;
-    display:flex; align-items:center; justify-content:center; gap:10px;
-    min-width:180px; box-shadow:0 6px 20px rgba(0,0,0,0.2);
-  }
-  .yes-btn { background: linear-gradient(to right, var(--primary), #ff758c); color:white; }
-  .yes-btn:hover { transform:translateY(-8px) scale(1.05); box-shadow:0 12px 25px rgba(255,77,109,0.4); }
-  .shy-btn { background: linear-gradient(to right, var(--secondary), #ffb3c1); color:white; }
-  .shy-btn:hover { transform:translateY(-5px) scale(1.05); box-shadow:0 10px 20px rgba(255,143,163,0.4); }
-
-  .celebration-overlay {
-    position:fixed; top:0; left:0; width:100%; height:100%;
-    background:rgba(89,13,34,0.95); display:none; justify-content:center;
-    align-items:center; flex-direction:column; z-index:100; padding:20px; text-align:center;
-  }
-  .celebration-content {
-    background:white; border-radius:25px; padding:30px; max-width:800px; width:100%;
-    box-shadow:0 20px 50px rgba(0,0,0,0.5); animation: popIn 0.8s cubic-bezier(0.175,0.885,0.32,1.275);
-  }
-  .celebration-title { font-family:'Dancing Script', cursive; font-size:3.5rem; color:var(--primary); margin-bottom:15px; }
-  .celebration-subtitle { font-size:1.3rem; margin-bottom:20px; color:var(--dark); }
-  .celebration-image { width:100%; max-height:400px; object-fit:contain; border-radius:20px; margin:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.3); display:none; }
-
-  .default-image {
-    width:100%; max-height:400px; object-fit:contain; border-radius:20px;
-    margin:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.3);
-    background:linear-gradient(45deg,var(--accent),var(--secondary));
-    display:flex; justify-content:center; align-items:center; color:white; font-size:1.2rem; font-weight:600;
-  }
-
-  .signature { margin-top:20px; font-family:'Dancing Script', cursive; font-size:2rem; color:var(--dark); text-align:right; }
-
-  @keyframes popIn { 0%{transform:scale(0.5);opacity:0;} 100%{transform:scale(1);opacity:1;} }
-
-</style>
+        .countdown-text {
+            font-size: 120px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493, 0 0 80px #ff1493;
+            letter-spacing: 10px;
+        }
+        .date-text {
+            font-size: 60px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493;
+            letter-spacing: 8px;
+        }
+        .months-text {
+            font-size: 70px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493, 0 0 50px #ff1493;
+        }
+        .name-text {
+            font-size: 80px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493, 0 0 60px #ff1493;
+            letter-spacing: 15px;
+        }
+        .message-text {
+            font-size: 28px;
+            color: #fff;
+            text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
+            max-width: 80%;
+            text-align: center;
+            line-height: 1.6;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 105, 180, 0.3);
+        }
+        .heart-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .heart-svg {
+            width: 350px;
+            height: 350px;
+            filter: drop-shadow(0 0 20px #ff1493) drop-shadow(0 0 40px #ff69b4);
+        }
+        .heart-svg path {
+            fill: none;
+            stroke: #ff1493;
+            stroke-width: 3;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawHeart 3s ease forwards;
+        }
+        @keyframes drawHeart { to { stroke-dashoffset: 0; } }
+        .heart-fill {
+            fill: rgba(255, 20, 147, 0.3);
+            animation: fillHeart 2s ease 2s forwards;
+            opacity: 0;
+        }
+        @keyframes fillHeart { to { opacity: 1; } }
+        .names-in-heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 15px #ff1493, 0 0 30px #ff69b4;
+            white-space: nowrap;
+            opacity: 0;
+            animation: fadeIn 2s ease 3s forwards;
+        }
+        .final-message {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #ffb6c1;
+            text-shadow: 0 0 10px #ff1493;
+            text-align: center;
+            opacity: 0;
+            animation: floatUp 2s ease 4s forwards;
+        }
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
+            animation: sparkleAnim 1.5s ease forwards;
+        }
+        @keyframes sparkleAnim {
+            0% { opacity: 1; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0) translateY(-50px); }
+        }
+        .ten-badge {
+            font-size: 100px;
+            font-weight: bold;
+            color: #ff1493;
+            text-shadow: 0 0 30px #ff1493, 0 0 60px #ff69b4;
+        }
+        .months-label {
+            font-size: 50px;
+            color: #ffb6c1;
+            text-shadow: 0 0 15px #ff1493;
+            margin-top: -10px;
+        }
+        .quote-text {
+            font-size: 22px;
+            color: #ffc0cb;
+            text-shadow: 0 0 8px #ff69b4;
+            font-style: italic;
+            max-width: 75%;
+            text-align: center;
+            line-height: 1.8;
+        }
+        @media (max-width: 768px) {
+            .countdown-text { font-size: 80px; }
+            .date-text { font-size: 40px; }
+            .months-text { font-size: 50px; }
+            .name-text { font-size: 50px; letter-spacing: 8px; }
+            .message-text { font-size: 20px; max-width: 90%; }
+            .heart-svg { width: 250px; height: 250px; }
+            .names-in-heart { font-size: 24px; }
+            .ten-badge { font-size: 70px; }
+            .months-label { font-size: 35px; }
+            .quote-text { font-size: 18px; }
+            .final-message { font-size: 18px; }
+        }
+    </style>
+<base target="_blank">
 </head>
 <body>
+    <canvas id="matrixCanvas"></canvas>
+    <div id="overlay">
+        <!-- Scene 1: Countdown -->
+        <div id="scene-countdown" class="hidden">
+            <div class="countdown-text" id="countdown-num">3</div>
+        </div>
 
-<div class="container">
-  <div class="header">
-    <h1>For My Olly ❤️</h1>
-    <p class="subtitle">A special Valentine's request from the heart</p>
-    <div class="names">
-      <div class="name-box lewis">Lewis</div>
-      <div class="heart-connector"><i class="fas fa-heartbeat"></i></div>
-      <div class="name-box">Olly</div>
+        <!-- Scene 2: Start Date -->
+        <div id="scene-startdate" class="hidden">
+            <div class="date-text" id="start-date">22.02.08</div>
+        </div>
+
+        <!-- Scene 3: Current Date -->
+        <div id="scene-currdate" class="hidden">
+            <div class="date-text" id="curr-date">29.06.07</div>
+        </div>
+
+        <!-- Scene 4: 10 Months -->
+        <div id="scene-months" class="hidden">
+            <div class="ten-badge">10</div>
+            <div class="months-label">Months</div>
+        </div>
+
+        <!-- Scene 5: Names -->
+        <div id="scene-names" class="hidden">
+            <div class="name-text">LEWIS & DOLGAH</div>
+        </div>
+
+        <!-- Scene 6: Messages -->
+        <div id="scene-messages" class="hidden">
+            <div class="message-text" id="message-display"></div>
+        </div>
+
+        <!-- Scene 7: Heart -->
+        <div id="scene-heart" class="hidden heart-container">
+            <svg class="heart-svg" viewBox="0 0 100 100">
+                <path class="heart-fill" d="M50,85 C50,85 20,60 20,40 C20,25 30,15 42,15 C47,15 50,20 50,20 C50,20 53,15 58,15 C70,15 80,25 80,40 C80,60 50,85 50,85 Z"/>
+                <path d="M50,85 C50,85 20,60 20,40 C20,25 30,15 42,15 C47,15 50,20 50,20 C50,20 53,15 58,15 C70,15 80,25 80,40 C80,60 50,85 50,85 Z"/>
+            </svg>
+            <div class="names-in-heart">Lewis ❤️ Dolgah</div>
+            <div class="final-message">Happy 10 Months, My Love!<br>Here's to forever together 💖</div>
+        </div>
     </div>
-  </div>
 
-  <div class="content">
-    <div class="left-panel">
-      <h2>My Dearest Olly,</h2>
-      <div class="message">
-        <p>From the moment we met, you've brought so much joy and light into my life. Your smile brightens my darkest days, and your laughter is my favorite melody.</p>
-        <p>This Valentine's Day, I want to ask you something special. Will you make me the happiest person in the world by being my Valentine?</p>
-        <p>I promise to cherish every moment with you, to be there through thick and thin, and to always make you feel as loved as you make me feel.</p>
-        <p>With all my heart,<br>Lewis</p>
-      </div>
+    <script>
+        // ===================== MATRIX RAIN =====================
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
 
-      <div class="upload-section">
-        <div class="upload-icon"><i class="fas fa-images"></i></div>
-        <h3>Add Our Special Picture</h3>
-        <p>Upload a photo of us to make this moment unforgettable</p>
-        <input type="file" id="imageUpload" accept="image/*" style="display:none;">
-        <button class="upload-btn" id="uploadTrigger"><i class="fas fa-upload"></i> Choose Photo</button>
-        <div id="imagePreview"><img id="previewImage" src="" alt="Our photo"></div>
-      </div>
-    </div>
+        let w, h;
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
 
-    <div class="right-panel">
-      <h2>Our Valentine's Moment</h2>
-      <p>Olly, when you click "Yes", something magical will happen! Upload a picture and it will appear in our celebration!</p>
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789❤️💕💖💗💘💝💞💟♥♡LOVEDOLGAHLEWIS10MONTHSFOREVER";
+        const fontSize = 16;
+        let columns;
+        let drops = [];
 
-      <div class="button-container">
-        <button class="response-btn yes-btn" id="yesBtn"><i class="fas fa-heart"></i> Yes, Absolutely!</button>
-        <button class="response-btn shy-btn" id="shyBtn"><i class="fas fa-smile"></i> Yes, But Shy 😊</button>
-      </div>
-    </div>
-  </div>
-</div>
+        function initMatrix() {
+            columns = Math.floor(w / fontSize);
+            drops = [];
+            for (let i = 0; i < columns; i++) {
+                drops[i] = Math.random() * -100;
+            }
+        }
+        initMatrix();
+        window.addEventListener('resize', initMatrix);
 
-<div class="celebration-overlay" id="celebrationOverlay">
-  <div class="celebration-content">
-    <h1 class="celebration-title">Yaaay! You Said Yes! 🎉</h1>
-    <p class="celebration-subtitle">This is the best Valentine's Day ever, Olly!</p>
-    <div class="default-image" id="defaultCelebration">Our Special Moment Together ❤️</div>
-    <img class="celebration-image" id="celebrationImage" src="" alt="Our special photo">
-    <p class="celebration-subtitle">I promise to make this Valentine's Day and every day after as wonderful as you are!</p>
-    <div class="signature">With all my love, Lewis</div>
-  </div>
-</div>
+        // Scene control
+        let currentScene = 0;
+        let sceneStartTime = 0;
+        let isHeartScene = false;
+        let heartParticles = [];
 
-<script>
-const yesBtn = document.getElementById('yesBtn');
-const shyBtn = document.getElementById('shyBtn');
-const celebrationOverlay = document.getElementById('celebrationOverlay');
-const uploadTrigger = document.getElementById('uploadTrigger');
-const imageUpload = document.getElementById('imageUpload');
-const previewImage = document.getElementById('previewImage');
-const imagePreview = document.getElementById('imagePreview');
-const celebrationImage = document.getElementById('celebrationImage');
-const defaultCelebration = document.getElementById('defaultCelebration');
+        const scenes = [
+            { id: 'scene-countdown', duration: 3500 },
+            { id: 'scene-startdate', duration: 3000 },
+            { id: 'scene-currdate', duration: 3000 },
+            { id: 'scene-months', duration: 3500 },
+            { id: 'scene-names', duration: 3500 },
+            { id: 'scene-messages', duration: 25000 },
+            { id: 'scene-heart', duration: 20000 }
+        ];
 
-uploadTrigger.addEventListener('click',()=> imageUpload.click());
-imageUpload.addEventListener('change',function(e){
-  const file = e.target.files[0];
-  if(file){
-    const reader = new FileReader();
-    reader.onload = function(ev){
-      previewImage.src = ev.target.result;
-      imagePreview.style.display='block';
-      celebrationImage.src = ev.target.result;
-      celebrationImage.style.display='block';
-      defaultCelebration.style.display='none';
-    };
-    reader.readAsDataURL(file);
-  }
-});
+        const messages = [
+            "Happy 10 months, my love! ❤️",
+            "Thank you for loving me for these amazing 10 months.",
+            "Every moment with you has been a beautiful memory.",
+            "You make my life happier every single day.",
+            "Thank you for always being there for me through everything.",
+            "I appreciate your love, care, and support more than words can express.",
+            "You are my favorite person, and I'm so lucky to have you.",
+            "I can't wait to create more beautiful memories with you in the months and years ahead.",
+            "No matter what happens, my love for you keeps growing stronger every day.",
+            "Here's to our 10 months together and to many more happy moments. I love you so much! 💖"
+        ];
 
-yesBtn.addEventListener('click',()=> celebrationOverlay.style.display='flex');
-shyBtn.addEventListener('click',()=>{
-  celebrationOverlay.style.display='flex';
-  document.querySelector('.celebration-title').textContent="Aww, That's So Sweet! 🥰";
-  document.querySelector('.celebration-subtitle').textContent="Even if shy, this moment is so special, Olly!";
-});
-</script>
+        let messageIndex = 0;
+        let messageStartTime = 0;
+        const MESSAGE_DISPLAY_TIME = 2500;
 
+        function showScene(index) {
+            // Hide all scenes
+            document.querySelectorAll('#overlay > div').forEach(div => {
+                div.classList.add('hidden');
+                div.classList.remove('fade-in', 'pulse', 'float-up', 'heart-beat', 'shimmer');
+            });
+
+            if (index >= scenes.length) {
+                index = scenes.length - 1;
+                currentScene = index;
+            }
+
+            const scene = document.getElementById(scenes[index].id);
+            if (!scene) return;
+
+            scene.classList.remove('hidden');
+            scene.classList.add('fade-in');
+
+            // Add special effects based on scene
+            if (scenes[index].id === 'scene-months') {
+                scene.classList.add('pulse');
+            }
+            if (scenes[index].id === 'scene-names') {
+                scene.classList.add('shimmer');
+            }
+            if (scenes[index].id === 'scene-heart') {
+                isHeartScene = true;
+                scene.classList.add('heart-beat');
+                initHeartParticles();
+            } else {
+                isHeartScene = false;
+            }
+
+            // Handle messages scene
+            if (scenes[index].id === 'scene-messages') {
+                messageIndex = 0;
+                messageStartTime = Date.now();
+                showNextMessage();
+            }
+
+            // Handle countdown
+            if (scenes[index].id === 'scene-countdown') {
+                startCountdown();
+            }
+
+            sceneStartTime = Date.now();
+        }
+
+        function startCountdown() {
+            let count = 3;
+            const el = document.getElementById('countdown-num');
+            el.textContent = count;
+
+            const interval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    el.textContent = count;
+                    el.classList.remove('fade-in');
+                    void el.offsetWidth; // trigger reflow
+                    el.classList.add('fade-in');
+                } else {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+
+        function showNextMessage() {
+            const msgEl = document.getElementById('message-display');
+            if (messageIndex < messages.length) {
+                msgEl.textContent = messages[messageIndex];
+                msgEl.classList.remove('float-up');
+                void msgEl.offsetWidth;
+                msgEl.classList.add('float-up');
+                messageIndex++;
+                setTimeout(showNextMessage, MESSAGE_DISPLAY_TIME);
+            }
+        }
+
+        // Heart particles for final scene
+        function initHeartParticles() {
+            heartParticles = [];
+            for (let i = 0; i < 50; i++) {
+                heartParticles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    size: Math.random() * 3 + 1,
+                    speedY: Math.random() * 2 + 0.5,
+                    speedX: (Math.random() - 0.5) * 1,
+                    opacity: Math.random(),
+                    color: ['#ff1493', '#ff69b4', '#ffb6c1', '#ffc0cb'][Math.floor(Math.random() * 4)]
+                });
+            }
+        }
+
+        function drawHeartParticles() {
+            heartParticles.forEach(p => {
+                ctx.globalAlpha = p.opacity;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                p.y -= p.speedY;
+                p.x += p.speedX;
+                p.opacity -= 0.005;
+
+                if (p.y < 0 || p.opacity <= 0) {
+                    p.y = h + 10;
+                    p.x = Math.random() * w;
+                    p.opacity = 1;
+                }
+            });
+            ctx.globalAlpha = 1;
+        }
+
+        // ===================== MAIN LOOP =====================
+        function drawMatrix() {
+            // Fade effect
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, w, h);
+
+            // If heart scene, make matrix more transparent
+            if (isHeartScene) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+                ctx.fillRect(0, 0, w, h);
+            }
+
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+
+                // Pink/magenta colors for love theme
+                const colors = ['#ff1493', '#ff69b4', '#ffb6c1', '#ff85c2', '#ff5da0', '#ff2d8a'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+
+                ctx.fillStyle = color;
+
+                // Random brightness
+                const brightness = Math.random();
+                if (brightness > 0.9) {
+                    ctx.shadowColor = color;
+                    ctx.shadowBlur = 10;
+                } else {
+                    ctx.shadowBlur = 0;
+                }
+
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                // Reset drop
+                if (drops[i] * fontSize > h && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                drops[i]++;
+            }
+
+            ctx.shadowBlur = 0;
+
+            if (isHeartScene) {
+                drawHeartParticles();
+            }
+        }
+
+        function gameLoop() {
+            drawMatrix();
+
+            // Scene management
+            const now = Date.now();
+            const elapsed = now - sceneStartTime;
+
+            if (currentScene < scenes.length - 1 && elapsed > scenes[currentScene].duration) {
+                currentScene++;
+                showScene(currentScene);
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start
+        showScene(0);
+        gameLoop();
+
+        // Add sparkle effects randomly
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 1500);
+            }
+        }, 500);
+
+        // Click to advance scene (optional)
+        document.addEventListener('click', () => {
+            if (currentScene < scenes.length - 1) {
+                currentScene++;
+                showScene(currentScene);
+            }
+        });
+    </script>
 </body>
 </html>
