@@ -29,7 +29,7 @@
             width: 100%; height: 100%;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            padding: 30px 20px;
+            padding: 40px 20px 60px 20px;
             opacity: 0;
             transition: opacity 1s ease;
         }
@@ -39,7 +39,7 @@
         .countdown-wrap {
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            gap: 20px;
+            gap: 15px;
         }
         .countdown-num {
             font-size: clamp(100px, 28vw, 220px);
@@ -50,7 +50,7 @@
             animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .countdown-label {
-            font-size: clamp(16px, 4vw, 24px);
+            font-size: clamp(14px, 3.5vw, 22px);
             color: #ff69b4;
             text-shadow: 0 0 10px #ff1493;
             letter-spacing: 8px;
@@ -73,6 +73,7 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 0 40px rgba(255, 20, 147, 0.15), inset 0 0 40px rgba(255, 105, 180, 0.05);
             animation: cardFloat 3s ease-in-out infinite, fadeInUp 1s ease both;
+            max-width: 90vw;
         }
         @keyframes cardFloat {
             0%, 100% { transform: translateY(0); }
@@ -88,7 +89,7 @@
             50% { transform: translateY(-10px); }
         }
         .date-label {
-            font-size: clamp(13px, 3vw, 18px);
+            font-size: clamp(12px, 3vw, 18px);
             color: #ff69b4;
             text-shadow: 0 0 8px #ff1493;
             letter-spacing: 6px;
@@ -330,7 +331,7 @@
         }
         .heart-final {
             position: absolute;
-            bottom: 10%;
+            bottom: 12%;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
@@ -372,14 +373,14 @@
             50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.6; }
         }
 
-        /* ===== PAUSE BUTTON (small, corner) ===== */
+        /* ===== PAUSE BUTTON (tiny, top-left corner) ===== */
         #pause-btn {
             position: fixed;
-            bottom: 20px; right: 20px;
-            width: 44px; height: 44px;
-            background: rgba(255, 20, 147, 0.2);
-            border: 1px solid rgba(255, 105, 180, 0.4);
-            border-radius: 50%;
+            top: 8px; left: 8px;
+            width: 32px; height: 32px;
+            background: rgba(255, 20, 147, 0.15);
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            border-radius: 8px;
             display: flex;
             justify-content: center; align-items: center;
             z-index: 100;
@@ -387,54 +388,38 @@
             pointer-events: auto;
             backdrop-filter: blur(5px);
             transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(255, 20, 147, 0.2);
+            box-shadow: 0 0 10px rgba(255, 20, 147, 0.1);
         }
         #pause-btn:active { transform: scale(0.9); }
-        #pause-btn:hover { background: rgba(255, 20, 147, 0.35); }
-        .pause-icon-svg { width: 16px; height: 16px; }
-        .pause-icon-svg rect { fill: #ff69b4; rx: 2; }
-        .play-icon-svg { width: 16px; height: 16px; display: none; }
+        #pause-btn:hover { background: rgba(255, 20, 147, 0.3); }
+        .pause-icon-svg { width: 12px; height: 12px; }
+        .pause-icon-svg rect { fill: #ff69b4; rx: 1; }
+        .play-icon-svg { width: 12px; height: 12px; display: none; }
         .play-icon-svg path { fill: #ff69b4; }
 
-        /* ===== PAUSE OVERLAY ===== */
-        #pause-overlay {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: none;
-            justify-content: center; align-items: center;
-            z-index: 90;
-            pointer-events: none;
-            backdrop-filter: blur(3px);
-        }
-        #pause-overlay.visible { display: flex; }
-        .pause-big {
-            display: flex; flex-direction: column;
-            align-items: center; gap: 15px;
-            animation: fadeInScale 0.3s ease;
-        }
-        .pause-big-circle {
-            width: 70px; height: 70px;
-            border: 3px solid #ff69b4;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center; align-items: center;
-            box-shadow: 0 0 30px #ff1493;
-        }
-        .pause-big-bars { display: flex; gap: 8px; }
-        .pause-big-bar {
-            width: 6px; height: 22px;
-            background: #ff69b4;
-            border-radius: 3px;
-        }
-        .pause-big-text {
-            font-size: 14px;
+        /* ===== PAUSE INDICATOR (tiny text, top center, never blocks) ===== */
+        #pause-indicator {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
             color: #ff69b4;
             text-shadow: 0 0 8px #ff1493;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background: rgba(0,0,0,0.4);
+            padding: 3px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,105,180,0.2);
         }
+        #pause-indicator.visible { opacity: 1; }
 
-        /* ===== PROGRESS BAR (thin, top) ===== */
+        /* ===== PROGRESS BAR (thin, very top) ===== */
         #progress-wrap {
             position: fixed;
             top: 0; left: 0;
@@ -443,13 +428,13 @@
             pointer-events: none;
         }
         #progress-bg {
-            width: 100%; height: 3px;
-            background: rgba(255, 105, 180, 0.1);
+            width: 100%; height: 2px;
+            background: rgba(255, 105, 180, 0.08);
         }
         #progress-fill {
-            height: 3px;
+            height: 2px;
             background: linear-gradient(90deg, #ff1493, #ff69b4, #ffb6c1);
-            box-shadow: 0 0 10px #ff1493;
+            box-shadow: 0 0 8px #ff1493;
             transition: width 0.1s linear;
             width: 0%;
         }
@@ -457,21 +442,21 @@
         /* ===== SCENE INDICATORS (top right, tiny) ===== */
         #scene-dots {
             position: fixed;
-            top: 12px; right: 12px;
-            display: flex; gap: 5px;
+            top: 8px; right: 8px;
+            display: flex; gap: 4px;
             z-index: 50;
             pointer-events: none;
         }
         .scene-dot {
-            width: 6px; height: 6px;
+            width: 5px; height: 5px;
             border-radius: 50%;
-            background: rgba(255, 105, 180, 0.25);
+            background: rgba(255, 105, 180, 0.2);
             transition: all 0.4s ease;
         }
         .scene-dot.active {
             background: #ff1493;
-            box-shadow: 0 0 8px #ff1493;
-            transform: scale(1.4);
+            box-shadow: 0 0 6px #ff1493;
+            transform: scale(1.3);
         }
 
         /* ===== SHARED ANIMATIONS ===== */
@@ -484,7 +469,7 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* ===== FLOATING PARTICLES (CSS) ===== */
+        /* ===== FLOATING PARTICLES ===== */
         .float-particle {
             position: fixed;
             pointer-events: none;
@@ -596,29 +581,19 @@
     <!-- Scene Dots -->
     <div id="scene-dots"></div>
 
-    <!-- Pause Button (small, corner) -->
+    <!-- Pause Button (tiny, top-left) -->
     <div id="pause-btn">
-        <svg class="pause-icon-svg" id="pause-icon" viewBox="0 0 16 16">
-            <rect x="2" y="1" width="4" height="14"/>
-            <rect x="10" y="1" width="4" height="14"/>
+        <svg class="pause-icon-svg" id="pause-icon" viewBox="0 0 12 12">
+            <rect x="1" y="1" width="3" height="10"/>
+            <rect x="8" y="1" width="3" height="10"/>
         </svg>
-        <svg class="play-icon-svg" id="play-icon" viewBox="0 0 16 16">
-            <path d="M3 1l12 7-12 7z"/>
+        <svg class="play-icon-svg" id="play-icon" viewBox="0 0 12 12">
+            <path d="M2 1l9 5-9 5z"/>
         </svg>
     </div>
 
-    <!-- Pause Overlay -->
-    <div id="pause-overlay">
-        <div class="pause-big">
-            <div class="pause-big-circle">
-                <div class="pause-big-bars">
-                    <div class="pause-big-bar"></div>
-                    <div class="pause-big-bar"></div>
-                </div>
-            </div>
-            <div class="pause-big-text">PAUSED</div>
-        </div>
-    </div>
+    <!-- Pause Indicator (tiny text, top center) -->
+    <div id="pause-indicator">PAUSED</div>
 </body>
 <script>
     // ===================== MATRIX RAIN =====================
@@ -769,9 +744,9 @@
         updateMsgDots();
     }
 
-    // ===================== PAUSE SYSTEM =====================
+    // ===================== PAUSE SYSTEM (FIXED - never blocks content) =====================
     const pauseBtn = document.getElementById('pause-btn');
-    const pauseOverlay = document.getElementById('pause-overlay');
+    const pauseIndicator = document.getElementById('pause-indicator');
     const pauseIcon = document.getElementById('pause-icon');
     const playIcon = document.getElementById('play-icon');
 
@@ -779,14 +754,14 @@
         if (isPaused) {
             isPaused = false;
             totalPausedTime += Date.now() - pauseStartTime;
-            pauseOverlay.classList.remove('visible');
+            pauseIndicator.classList.remove('visible');
             pauseIcon.style.display = 'block';
             playIcon.style.display = 'none';
             if (currentScene === 0 && countdownValue > 0) startCountdown();
         } else {
             isPaused = true;
             pauseStartTime = Date.now();
-            pauseOverlay.classList.add('visible');
+            pauseIndicator.classList.add('visible');
             pauseIcon.style.display = 'none';
             playIcon.style.display = 'block';
             if (countdownInterval) clearInterval(countdownInterval);
@@ -796,20 +771,6 @@
     pauseBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         togglePause();
-    });
-
-    // Also allow tap anywhere to pause (optional, can remove if annoying)
-    let tapTimer = null;
-    document.addEventListener('click', (e) => {
-        if (e.target.closest('#pause-btn')) return;
-        // Double-tap to pause anywhere
-        if (tapTimer) {
-            clearTimeout(tapTimer);
-            tapTimer = null;
-            togglePause();
-        } else {
-            tapTimer = setTimeout(() => { tapTimer = null; }, 300);
-        }
     });
 
     document.addEventListener('contextmenu', e => e.preventDefault());
@@ -848,7 +809,7 @@
         ctx.globalAlpha = 1;
     }
 
-    // ===================== FLOATING PARTICLES (DOM) =====================
+    // ===================== FLOATING PARTICLES =====================
     function createFloatParticle() {
         const p = document.createElement('div');
         p.className = 'float-particle';
