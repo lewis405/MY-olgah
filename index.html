@@ -2,505 +2,927 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Happy 10 Months, Dolgah & Lewis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy 10 Months, Olgah & Lewis</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body {
             background: #000;
             overflow: hidden;
-            font-family: 'Courier New', monospace;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            width: 100%; height: 100%;
+            touch-action: none;
+            -webkit-user-select: none; user-select: none;
         }
         canvas {
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
+            display: block; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; z-index: 1;
         }
         #overlay {
-            position: absolute;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             z-index: 10;
             pointer-events: none;
         }
-        .hidden { opacity: 0; }
-        .fade-in { animation: fadeIn 2s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
-        .fade-out { animation: fadeOut 1s ease forwards; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        .pulse { animation: pulse 2s ease-in-out infinite; }
-        @keyframes floatUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .float-up { animation: floatUp 1.5s ease forwards; }
-        @keyframes heartBeat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } }
-        .heart-beat { animation: heartBeat 1.5s ease-in-out infinite; }
-        @keyframes shimmer { 0% { text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493; } 50% { text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493, 0 0 60px #ff1493; } 100% { text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493; } }
-        .shimmer { animation: shimmer 2s ease-in-out infinite; }
-        @keyframes typewriter { from { width: 0; } to { width: 100%; } }
-        .typewriter { overflow: hidden; white-space: nowrap; animation: typewriter 3s steps(40) forwards; }
-        @keyframes glowPulse { 0%, 100% { box-shadow: 0 0 20px rgba(255, 20, 147, 0.5); } 50% { box-shadow: 0 0 40px rgba(255, 20, 147, 0.8), 0 0 60px rgba(255, 105, 180, 0.4); } }
+        .scene {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 30px 20px;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        .scene.active { opacity: 1; }
 
-        .countdown-text {
-            font-size: 120px;
-            font-weight: bold;
+        /* ===== COUNTDOWN ===== */
+        .countdown-wrap {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 20px;
+        }
+        .countdown-num {
+            font-size: clamp(100px, 28vw, 220px);
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 30px #ff1493, 0 0 60px #ff69b4, 0 0 120px #ff1493;
+            line-height: 1;
+            animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .countdown-label {
+            font-size: clamp(16px, 4vw, 24px);
+            color: #ff69b4;
+            text-shadow: 0 0 10px #ff1493;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+            60% { transform: scale(1.1) rotate(2deg); }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        /* ===== DATE SCENES ===== */
+        .date-card {
+            background: rgba(255, 20, 147, 0.08);
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            border-radius: 24px;
+            padding: clamp(30px, 8vw, 60px) clamp(25px, 6vw, 50px);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 40px rgba(255, 20, 147, 0.15), inset 0 0 40px rgba(255, 105, 180, 0.05);
+            animation: cardFloat 3s ease-in-out infinite, fadeInUp 1s ease both;
+        }
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .date-icon {
+            font-size: clamp(36px, 8vw, 56px);
+            margin-bottom: 15px;
+            animation: bounce 2s ease infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .date-label {
+            font-size: clamp(13px, 3vw, 18px);
+            color: #ff69b4;
+            text-shadow: 0 0 8px #ff1493;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .date-value {
+            font-size: clamp(40px, 11vw, 90px);
+            font-weight: 800;
             color: #fff;
             text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493, 0 0 80px #ff1493;
-            letter-spacing: 10px;
+            letter-spacing: 4px;
+            line-height: 1.1;
         }
-        .date-text {
-            font-size: 60px;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493;
-            letter-spacing: 8px;
+        .date-sub {
+            font-size: clamp(12px, 2.8vw, 16px);
+            color: #ffb6c1;
+            margin-top: 10px;
+            letter-spacing: 2px;
         }
-        .months-text {
-            font-size: 70px;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493, 0 0 50px #ff1493;
+
+        /* ===== 10 MONTHS ===== */
+        .months-wrap {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 5px;
         }
-        .name-text {
-            font-size: 80px;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493, 0 0 60px #ff1493;
-            letter-spacing: 15px;
+        .months-number {
+            font-size: clamp(120px, 35vw, 280px);
+            font-weight: 900;
+            color: transparent;
+            -webkit-text-stroke: 2px #ff1493;
+            text-shadow: 0 0 40px #ff1493, 0 0 80px #ff69b4, 0 0 120px rgba(255, 20, 147, 0.5);
+            line-height: 0.9;
+            animation: glowPulse 2s ease-in-out infinite, fadeInScale 1s ease both;
         }
-        .message-text {
-            font-size: 28px;
-            color: #fff;
-            text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
-            max-width: 80%;
-            text-align: center;
-            line-height: 1.6;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.4);
+        @keyframes glowPulse {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .months-word {
+            font-size: clamp(28px, 7vw, 56px);
+            font-weight: 700;
+            color: #ffb6c1;
+            text-shadow: 0 0 15px #ff1493, 0 0 30px #ff69b4;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+        .months-sub {
+            font-size: clamp(14px, 3.5vw, 22px);
+            color: #ffc0cb;
+            text-shadow: 0 0 8px #ff69b4;
+            margin-top: 15px;
+            letter-spacing: 3px;
+            animation: fadeInUp 1s ease 1s both;
+        }
+        .months-hearts {
+            font-size: clamp(24px, 5vw, 36px);
+            margin-top: 20px;
+            animation: fadeInUp 1s ease 1.5s both;
+        }
+        .months-hearts span {
+            display: inline-block;
+            animation: heartFloat 1.5s ease-in-out infinite;
+        }
+        .months-hearts span:nth-child(2) { animation-delay: 0.2s; }
+        .months-hearts span:nth-child(3) { animation-delay: 0.4s; }
+        .months-hearts span:nth-child(4) { animation-delay: 0.6s; }
+        .months-hearts span:nth-child(5) { animation-delay: 0.8s; }
+        @keyframes heartFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.2); }
+        }
+
+        /* ===== NAMES ===== */
+        .names-wrap {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 10px;
+        }
+        .name-box {
+            background: rgba(255, 20, 147, 0.1);
+            border: 1px solid rgba(255, 105, 180, 0.25);
             border-radius: 20px;
-            border: 1px solid rgba(255, 105, 180, 0.3);
+            padding: clamp(15px, 4vw, 30px) clamp(30px, 8vw, 60px);
+            animation: fadeInUp 0.8s ease both;
         }
-        .heart-container {
-            position: relative;
+        .name-box:nth-child(1) { animation-delay: 0s; }
+        .name-box:nth-child(3) { animation-delay: 0.4s; }
+        .name-text {
+            font-size: clamp(36px, 10vw, 80px);
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493, 0 0 80px #ff1493;
+            letter-spacing: clamp(3px, 1.5vw, 10px);
+            text-align: center;
+            line-height: 1.2;
+        }
+        .names-connector {
+            font-size: clamp(40px, 10vw, 70px);
+            animation: heartbeat 1.2s ease-in-out infinite, fadeInScale 0.6s ease 0.2s both;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            14% { transform: scale(1.2); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.2); }
+        }
+        .names-tagline {
+            font-size: clamp(14px, 3.5vw, 22px);
+            color: #ffb6c1;
+            text-shadow: 0 0 8px #ff69b4;
+            margin-top: 20px;
+            letter-spacing: 4px;
+            animation: fadeInUp 1s ease 0.8s both;
+        }
+
+        /* ===== MESSAGES ===== */
+        .msg-wrap {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            width: 100%; max-width: 600px;
+        }
+        .msg-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            border-radius: 24px;
+            padding: clamp(25px, 6vw, 45px) clamp(20px, 5vw, 40px);
+            text-align: center;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 30px rgba(255, 20, 147, 0.1);
             width: 100%;
-            height: 100%;
-            display: flex;
+            animation: cardIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(40px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .msg-badge {
+            display: inline-block;
+            background: rgba(255, 20, 147, 0.2);
+            border: 1px solid rgba(255, 105, 180, 0.4);
+            border-radius: 50px;
+            padding: 6px 18px;
+            font-size: clamp(11px, 2.5vw, 14px);
+            color: #ff69b4;
+            text-shadow: 0 0 5px #ff1493;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .msg-text {
+            font-size: clamp(20px, 5.5vw, 34px);
+            color: #fff;
+            text-shadow: 0 0 12px #ff69b4, 0 0 25px #ff1493;
+            line-height: 1.5;
+            font-weight: 500;
+            min-height: 80px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .msg-heart {
+            font-size: clamp(28px, 6vw, 42px);
+            margin-top: 18px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        .msg-dots {
+            display: flex; gap: 6px;
             justify-content: center;
-            align-items: center;
+            margin-top: 20px;
+        }
+        .msg-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 105, 180, 0.3);
+            transition: all 0.3s ease;
+        }
+        .msg-dot.active {
+            background: #ff1493;
+            box-shadow: 0 0 10px #ff1493;
+            transform: scale(1.3);
+        }
+
+        /* ===== HEART FINALE ===== */
+        .heart-wrap {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            width: 100%; height: 100%;
+            position: relative;
+        }
+        .heart-svg-wrap {
+            position: relative;
+            width: clamp(220px, 55vw, 380px);
+            height: clamp(220px, 55vw, 380px);
+            animation: fadeInScale 1s ease both;
         }
         .heart-svg {
-            width: 350px;
-            height: 350px;
-            filter: drop-shadow(0 0 20px #ff1493) drop-shadow(0 0 40px #ff69b4);
+            width: 100%; height: 100%;
+            filter: drop-shadow(0 0 25px #ff1493) drop-shadow(0 0 50px #ff69b4);
         }
         .heart-svg path {
             fill: none;
             stroke: #ff1493;
-            stroke-width: 3;
+            stroke-width: 2.5;
             stroke-dasharray: 1000;
             stroke-dashoffset: 1000;
-            animation: drawHeart 3s ease forwards;
+        }
+        .heart-svg path.drawn { animation: drawHeart 2.5s ease forwards; }
+        .heart-svg path.filled {
+            fill: rgba(255, 20, 147, 0.2);
+            animation: fillHeart 1.5s ease forwards;
         }
         @keyframes drawHeart { to { stroke-dashoffset: 0; } }
-        .heart-fill {
-            fill: rgba(255, 20, 147, 0.3);
-            animation: fillHeart 2s ease 2s forwards;
-            opacity: 0;
-        }
-        @keyframes fillHeart { to { opacity: 1; } }
-        .names-in-heart {
+        @keyframes fillHeart { from { fill-opacity: 0; } to { fill-opacity: 1; } }
+
+        .heart-names {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 32px;
-            font-weight: bold;
+            font-size: clamp(20px, 5.5vw, 36px);
+            font-weight: 700;
             color: #fff;
             text-shadow: 0 0 15px #ff1493, 0 0 30px #ff69b4;
             white-space: nowrap;
+            text-align: center;
             opacity: 0;
-            animation: fadeIn 2s ease 3s forwards;
+            line-height: 1.3;
         }
-        .final-message {
+        .heart-names.show {
+            animation: namesAppear 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes namesAppear {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.3) rotate(-5deg); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0); }
+        }
+        .heart-final {
             position: absolute;
-            bottom: 15%;
+            bottom: 10%;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 24px;
-            color: #ffb6c1;
-            text-shadow: 0 0 10px #ff1493;
             text-align: center;
+            width: 90%;
             opacity: 0;
-            animation: floatUp 2s ease 4s forwards;
         }
-        .sparkle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
-            animation: sparkleAnim 1.5s ease forwards;
+        .heart-final.show {
+            animation: finalAppear 2s ease forwards;
         }
-        @keyframes sparkleAnim {
-            0% { opacity: 1; transform: scale(0); }
-            50% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0) translateY(-50px); }
+        @keyframes finalAppear {
+            from { opacity: 0; transform: translateX(-50%) translateY(30px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
-        .ten-badge {
-            font-size: 100px;
-            font-weight: bold;
-            color: #ff1493;
-            text-shadow: 0 0 30px #ff1493, 0 0 60px #ff69b4;
+        .heart-final-text {
+            font-size: clamp(22px, 6vw, 40px);
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 15px #ff1493, 0 0 30px #ff69b4;
+            line-height: 1.3;
         }
-        .months-label {
-            font-size: 50px;
+        .heart-final-sub {
+            font-size: clamp(14px, 3.5vw, 22px);
             color: #ffb6c1;
-            text-shadow: 0 0 15px #ff1493;
-            margin-top: -10px;
-        }
-        .quote-text {
-            font-size: 22px;
-            color: #ffc0cb;
             text-shadow: 0 0 8px #ff69b4;
-            font-style: italic;
-            max-width: 75%;
-            text-align: center;
-            line-height: 1.8;
+            margin-top: 10px;
         }
-        @media (max-width: 768px) {
-            .countdown-text { font-size: 80px; }
-            .date-text { font-size: 40px; }
-            .months-text { font-size: 50px; }
-            .name-text { font-size: 50px; letter-spacing: 8px; }
-            .message-text { font-size: 20px; max-width: 90%; }
-            .heart-svg { width: 250px; height: 250px; }
-            .names-in-heart { font-size: 24px; }
-            .ten-badge { font-size: 70px; }
-            .months-label { font-size: 35px; }
-            .quote-text { font-size: 18px; }
-            .final-message { font-size: 18px; }
+        .heart-sparkle-ring {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: clamp(280px, 70vw, 480px);
+            height: clamp(280px, 70vw, 480px);
+            border: 1px solid rgba(255, 20, 147, 0.15);
+            border-radius: 50%;
+            animation: ringPulse 3s ease-in-out infinite;
+        }
+        @keyframes ringPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.6; }
+        }
+
+        /* ===== PAUSE BUTTON (small, corner) ===== */
+        #pause-btn {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            width: 44px; height: 44px;
+            background: rgba(255, 20, 147, 0.2);
+            border: 1px solid rgba(255, 105, 180, 0.4);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center; align-items: center;
+            z-index: 100;
+            cursor: pointer;
+            pointer-events: auto;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 20, 147, 0.2);
+        }
+        #pause-btn:active { transform: scale(0.9); }
+        #pause-btn:hover { background: rgba(255, 20, 147, 0.35); }
+        .pause-icon-svg { width: 16px; height: 16px; }
+        .pause-icon-svg rect { fill: #ff69b4; rx: 2; }
+        .play-icon-svg { width: 16px; height: 16px; display: none; }
+        .play-icon-svg path { fill: #ff69b4; }
+
+        /* ===== PAUSE OVERLAY ===== */
+        #pause-overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center; align-items: center;
+            z-index: 90;
+            pointer-events: none;
+            backdrop-filter: blur(3px);
+        }
+        #pause-overlay.visible { display: flex; }
+        .pause-big {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 15px;
+            animation: fadeInScale 0.3s ease;
+        }
+        .pause-big-circle {
+            width: 70px; height: 70px;
+            border: 3px solid #ff69b4;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center; align-items: center;
+            box-shadow: 0 0 30px #ff1493;
+        }
+        .pause-big-bars { display: flex; gap: 8px; }
+        .pause-big-bar {
+            width: 6px; height: 22px;
+            background: #ff69b4;
+            border-radius: 3px;
+        }
+        .pause-big-text {
+            font-size: 14px;
+            color: #ff69b4;
+            text-shadow: 0 0 8px #ff1493;
+            letter-spacing: 3px;
+        }
+
+        /* ===== PROGRESS BAR (thin, top) ===== */
+        #progress-wrap {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 50;
+            pointer-events: none;
+        }
+        #progress-bg {
+            width: 100%; height: 3px;
+            background: rgba(255, 105, 180, 0.1);
+        }
+        #progress-fill {
+            height: 3px;
+            background: linear-gradient(90deg, #ff1493, #ff69b4, #ffb6c1);
+            box-shadow: 0 0 10px #ff1493;
+            transition: width 0.1s linear;
+            width: 0%;
+        }
+
+        /* ===== SCENE INDICATORS (top right, tiny) ===== */
+        #scene-dots {
+            position: fixed;
+            top: 12px; right: 12px;
+            display: flex; gap: 5px;
+            z-index: 50;
+            pointer-events: none;
+        }
+        .scene-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 105, 180, 0.25);
+            transition: all 0.4s ease;
+        }
+        .scene-dot.active {
+            background: #ff1493;
+            box-shadow: 0 0 8px #ff1493;
+            transform: scale(1.4);
+        }
+
+        /* ===== SHARED ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.7); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* ===== FLOATING PARTICLES (CSS) ===== */
+        .float-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 5;
+            animation: particleFloat linear forwards;
+        }
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
         }
     </style>
 <base target="_blank">
 </head>
 <body>
     <canvas id="matrixCanvas"></canvas>
+
     <div id="overlay">
-        <!-- Scene 1: Countdown -->
-        <div id="scene-countdown" class="hidden">
-            <div class="countdown-text" id="countdown-num">3</div>
+        <!-- Scene 0: Countdown -->
+        <div class="scene" id="scene-0">
+            <div class="countdown-wrap">
+                <div class="countdown-num" id="countdown-num">3</div>
+                <div class="countdown-label">Get Ready</div>
+            </div>
         </div>
 
-        <!-- Scene 2: Start Date -->
-        <div id="scene-startdate" class="hidden">
-            <div class="date-text" id="start-date">22.02.08</div>
+        <!-- Scene 1: Start Date -->
+        <div class="scene" id="scene-1">
+            <div class="date-card">
+                <div class="date-icon">📅</div>
+                <div class="date-label">Our Journey Began</div>
+                <div class="date-value">01.09.2025</div>
+                <div class="date-sub">The day everything changed</div>
+            </div>
         </div>
 
-        <!-- Scene 3: Current Date -->
-        <div id="scene-currdate" class="hidden">
-            <div class="date-text" id="curr-date">29.06.07</div>
+        <!-- Scene 2: Current Date -->
+        <div class="scene" id="scene-2">
+            <div class="date-card">
+                <div class="date-icon">✨</div>
+                <div class="date-label">Today We Celebrate</div>
+                <div class="date-value">01.07.2026</div>
+                <div class="date-sub">10 beautiful months together</div>
+            </div>
         </div>
 
-        <!-- Scene 4: 10 Months -->
-        <div id="scene-months" class="hidden">
-            <div class="ten-badge">10</div>
-            <div class="months-label">Months</div>
+        <!-- Scene 3: 10 Months -->
+        <div class="scene" id="scene-3">
+            <div class="months-wrap">
+                <div class="months-number">10</div>
+                <div class="months-word">Months</div>
+                <div class="months-sub">of Pure Love & Happiness</div>
+                <div class="months-hearts">
+                    <span>💕</span><span>💖</span><span>💗</span><span>💘</span><span>💝</span>
+                </div>
+            </div>
         </div>
 
-        <!-- Scene 5: Names -->
-        <div id="scene-names" class="hidden">
-            <div class="name-text">LEWIS & DOLGAH</div>
+        <!-- Scene 4: Names -->
+        <div class="scene" id="scene-4">
+            <div class="names-wrap">
+                <div class="name-box">
+                    <div class="name-text">LEWIS</div>
+                </div>
+                <div class="names-connector">❤️</div>
+                <div class="name-box">
+                    <div class="name-text">OLGAH</div>
+                </div>
+                <div class="names-tagline">Together Forever</div>
+            </div>
         </div>
 
-        <!-- Scene 6: Messages -->
-        <div id="scene-messages" class="hidden">
-            <div class="message-text" id="message-display"></div>
+        <!-- Scene 5: Messages -->
+        <div class="scene" id="scene-5">
+            <div class="msg-wrap">
+                <div class="msg-card">
+                    <div class="msg-badge" id="msg-badge">Message 1 of 10</div>
+                    <div class="msg-text" id="msg-text">Happy 10 months, my love! ❤️</div>
+                    <div class="msg-heart" id="msg-heart">❤️</div>
+                    <div class="msg-dots" id="msg-dots"></div>
+                </div>
+            </div>
         </div>
 
-        <!-- Scene 7: Heart -->
-        <div id="scene-heart" class="hidden heart-container">
-            <svg class="heart-svg" viewBox="0 0 100 100">
-                <path class="heart-fill" d="M50,85 C50,85 20,60 20,40 C20,25 30,15 42,15 C47,15 50,20 50,20 C50,20 53,15 58,15 C70,15 80,25 80,40 C80,60 50,85 50,85 Z"/>
-                <path d="M50,85 C50,85 20,60 20,40 C20,25 30,15 42,15 C47,15 50,20 50,20 C50,20 53,15 58,15 C70,15 80,25 80,40 C80,60 50,85 50,85 Z"/>
-            </svg>
-            <div class="names-in-heart">Lewis ❤️ Dolgah</div>
-            <div class="final-message">Happy 10 Months, My Love!<br>Here's to forever together 💖</div>
+        <!-- Scene 6: Heart Finale -->
+        <div class="scene" id="scene-6">
+            <div class="heart-wrap">
+                <div class="heart-sparkle-ring"></div>
+                <div class="heart-svg-wrap">
+                    <svg class="heart-svg" viewBox="0 0 100 100">
+                        <path id="heart-path" d="M50,88 C50,88 18,62 18,42 C18,28 28,18 40,18 C45,18 50,23 50,23 C50,23 55,18 60,18 C72,18 82,28 82,42 C82,62 50,88 50,88 Z"/>
+                    </svg>
+                    <div class="heart-names" id="heart-names">Lewis<br>❤️<br>Olgah</div>
+                </div>
+                <div class="heart-final" id="heart-final">
+                    <div class="heart-final-text">Happy 10 Months, My Love!</div>
+                    <div class="heart-final-sub">Here's to forever together 💖</div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script>
-        // ===================== MATRIX RAIN =====================
-        const canvas = document.getElementById('matrixCanvas');
-        const ctx = canvas.getContext('2d');
+    <!-- Progress Bar -->
+    <div id="progress-wrap">
+        <div id="progress-bg"><div id="progress-fill"></div></div>
+    </div>
 
-        let w, h;
-        function resize() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
+    <!-- Scene Dots -->
+    <div id="scene-dots"></div>
+
+    <!-- Pause Button (small, corner) -->
+    <div id="pause-btn">
+        <svg class="pause-icon-svg" id="pause-icon" viewBox="0 0 16 16">
+            <rect x="2" y="1" width="4" height="14"/>
+            <rect x="10" y="1" width="4" height="14"/>
+        </svg>
+        <svg class="play-icon-svg" id="play-icon" viewBox="0 0 16 16">
+            <path d="M3 1l12 7-12 7z"/>
+        </svg>
+    </div>
+
+    <!-- Pause Overlay -->
+    <div id="pause-overlay">
+        <div class="pause-big">
+            <div class="pause-big-circle">
+                <div class="pause-big-bars">
+                    <div class="pause-big-bar"></div>
+                    <div class="pause-big-bar"></div>
+                </div>
+            </div>
+            <div class="pause-big-text">PAUSED</div>
+        </div>
+    </div>
+</body>
+<script>
+    // ===================== MATRIX RAIN =====================
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+    function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789❤️💕💖💗💘💝💞💟♥♡LOVEOLGAHLEWIS10MONTHSFOREVERHAPPINESS";
+    const fontSize = 15;
+    let columns, drops = [];
+    function initMatrix() {
+        columns = Math.floor(w / fontSize);
+        drops = [];
+        for (let i = 0; i < columns; i++) drops[i] = Math.random() * -80;
+    }
+    initMatrix();
+    window.addEventListener('resize', initMatrix);
+
+    // ===================== SCENE DATA =====================
+    const messages = [
+        { text: "Happy 10 months, my love! ❤️", heart: "❤️" },
+        { text: "Thank you for loving me for these amazing 10 months.", heart: "💕" },
+        { text: "Every moment with you has been a beautiful memory.", heart: "💖" },
+        { text: "You make my life happier every single day.", heart: "💗" },
+        { text: "Thank you for always being there for me through everything.", heart: "💘" },
+        { text: "I appreciate your love, care, and support more than words can express.", heart: "💝" },
+        { text: "You are my favorite person, and I'm so lucky to have you.", heart: "💞" },
+        { text: "I can't wait to create more beautiful memories with you ahead.", heart: "💟" },
+        { text: "No matter what, my love for you keeps growing stronger every day.", heart: "♥️" },
+        { text: "Here's to our 10 months and many more. I love you so much! 💖", heart: "💖" }
+    ];
+
+    const sceneDurations = [4000, 5000, 5000, 5500, 5500, 42000, 30000];
+    let currentScene = 0;
+    let sceneStartTime = 0;
+    let isPaused = false;
+    let pauseStartTime = 0;
+    let totalPausedTime = 0;
+    let isHeartScene = false;
+    let heartParticles = [];
+    let countdownValue = 3;
+    let countdownInterval = null;
+    let messageIndex = 0;
+    let messageStartTime = 0;
+    const MESSAGE_TIME = 4200;
+
+    // ===================== SCENE DOTS =====================
+    const sceneDotsContainer = document.getElementById('scene-dots');
+    for (let i = 0; i < sceneDurations.length; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'scene-dot' + (i === 0 ? ' active' : '');
+        sceneDotsContainer.appendChild(dot);
+    }
+    function updateSceneDots() {
+        document.querySelectorAll('.scene-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === currentScene);
+        });
+    }
+
+    // ===================== MESSAGE DOTS =====================
+    const msgDotsContainer = document.getElementById('msg-dots');
+    messages.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'msg-dot' + (i === 0 ? ' active' : '');
+        msgDotsContainer.appendChild(dot);
+    });
+    function updateMsgDots() {
+        document.querySelectorAll('.msg-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === messageIndex);
+        });
+    }
+
+    // ===================== SHOW SCENE =====================
+    function showScene(index) {
+        document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+        const scene = document.getElementById('scene-' + index);
+        if (scene) scene.classList.add('active');
+        updateSceneDots();
+
+        isHeartScene = (index === 6);
+        if (isHeartScene) {
+            initHeartParticles();
+            setTimeout(() => {
+                document.getElementById('heart-path').classList.add('drawn');
+                setTimeout(() => {
+                    document.getElementById('heart-path').classList.add('filled');
+                    setTimeout(() => {
+                        document.getElementById('heart-names').classList.add('show');
+                        setTimeout(() => {
+                            document.getElementById('heart-final').classList.add('show');
+                        }, 1800);
+                    }, 1200);
+                }, 2200);
+            }, 600);
         }
-        resize();
-        window.addEventListener('resize', resize);
 
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789❤️💕💖💗💘💝💞💟♥♡LOVEDOLGAHLEWIS10MONTHSFOREVER";
-        const fontSize = 16;
-        let columns;
-        let drops = [];
-
-        function initMatrix() {
-            columns = Math.floor(w / fontSize);
-            drops = [];
-            for (let i = 0; i < columns; i++) {
-                drops[i] = Math.random() * -100;
-            }
+        if (index === 0) startCountdown();
+        if (index === 5) {
+            messageIndex = 0;
+            messageStartTime = Date.now();
+            showMessage(0);
+            updateMsgDots();
         }
-        initMatrix();
-        window.addEventListener('resize', initMatrix);
 
-        // Scene control
-        let currentScene = 0;
-        let sceneStartTime = 0;
-        let isHeartScene = false;
-        let heartParticles = [];
+        sceneStartTime = Date.now();
+        totalPausedTime = 0;
+    }
 
-        const scenes = [
-            { id: 'scene-countdown', duration: 3500 },
-            { id: 'scene-startdate', duration: 3000 },
-            { id: 'scene-currdate', duration: 3000 },
-            { id: 'scene-months', duration: 3500 },
-            { id: 'scene-names', duration: 3500 },
-            { id: 'scene-messages', duration: 25000 },
-            { id: 'scene-heart', duration: 20000 }
-        ];
-
-        const messages = [
-            "Happy 10 months, my love! ❤️",
-            "Thank you for loving me for these amazing 10 months.",
-            "Every moment with you has been a beautiful memory.",
-            "You make my life happier every single day.",
-            "Thank you for always being there for me through everything.",
-            "I appreciate your love, care, and support more than words can express.",
-            "You are my favorite person, and I'm so lucky to have you.",
-            "I can't wait to create more beautiful memories with you in the months and years ahead.",
-            "No matter what happens, my love for you keeps growing stronger every day.",
-            "Here's to our 10 months together and to many more happy moments. I love you so much! 💖"
-        ];
-
-        let messageIndex = 0;
-        let messageStartTime = 0;
-        const MESSAGE_DISPLAY_TIME = 2500;
-
-        function showScene(index) {
-            // Hide all scenes
-            document.querySelectorAll('#overlay > div').forEach(div => {
-                div.classList.add('hidden');
-                div.classList.remove('fade-in', 'pulse', 'float-up', 'heart-beat', 'shimmer');
-            });
-
-            if (index >= scenes.length) {
-                index = scenes.length - 1;
-                currentScene = index;
-            }
-
-            const scene = document.getElementById(scenes[index].id);
-            if (!scene) return;
-
-            scene.classList.remove('hidden');
-            scene.classList.add('fade-in');
-
-            // Add special effects based on scene
-            if (scenes[index].id === 'scene-months') {
-                scene.classList.add('pulse');
-            }
-            if (scenes[index].id === 'scene-names') {
-                scene.classList.add('shimmer');
-            }
-            if (scenes[index].id === 'scene-heart') {
-                isHeartScene = true;
-                scene.classList.add('heart-beat');
-                initHeartParticles();
+    function startCountdown() {
+        countdownValue = 3;
+        const el = document.getElementById('countdown-num');
+        el.textContent = countdownValue;
+        el.style.animation = 'none';
+        void el.offsetWidth;
+        el.style.animation = 'popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        if (countdownInterval) clearInterval(countdownInterval);
+        countdownInterval = setInterval(() => {
+            if (isPaused) return;
+            countdownValue--;
+            if (countdownValue > 0) {
+                el.textContent = countdownValue;
+                el.style.animation = 'none';
+                void el.offsetWidth;
+                el.style.animation = 'popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
             } else {
-                isHeartScene = false;
+                clearInterval(countdownInterval);
             }
+        }, 1000);
+    }
 
-            // Handle messages scene
-            if (scenes[index].id === 'scene-messages') {
-                messageIndex = 0;
-                messageStartTime = Date.now();
-                showNextMessage();
-            }
+    function showMessage(idx) {
+        if (idx >= messages.length) return;
+        const badge = document.getElementById('msg-badge');
+        const text = document.getElementById('msg-text');
+        const heart = document.getElementById('msg-heart');
+        badge.textContent = `Message ${idx + 1} of ${messages.length}`;
+        text.textContent = messages[idx].text;
+        heart.textContent = messages[idx].heart;
+        text.style.animation = 'none';
+        void text.offsetWidth;
+        text.style.animation = 'cardIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both';
+        updateMsgDots();
+    }
 
-            // Handle countdown
-            if (scenes[index].id === 'scene-countdown') {
-                startCountdown();
-            }
+    // ===================== PAUSE SYSTEM =====================
+    const pauseBtn = document.getElementById('pause-btn');
+    const pauseOverlay = document.getElementById('pause-overlay');
+    const pauseIcon = document.getElementById('pause-icon');
+    const playIcon = document.getElementById('play-icon');
 
-            sceneStartTime = Date.now();
+    function togglePause() {
+        if (isPaused) {
+            isPaused = false;
+            totalPausedTime += Date.now() - pauseStartTime;
+            pauseOverlay.classList.remove('visible');
+            pauseIcon.style.display = 'block';
+            playIcon.style.display = 'none';
+            if (currentScene === 0 && countdownValue > 0) startCountdown();
+        } else {
+            isPaused = true;
+            pauseStartTime = Date.now();
+            pauseOverlay.classList.add('visible');
+            pauseIcon.style.display = 'none';
+            playIcon.style.display = 'block';
+            if (countdownInterval) clearInterval(countdownInterval);
         }
+    }
 
-        function startCountdown() {
-            let count = 3;
-            const el = document.getElementById('countdown-num');
-            el.textContent = count;
+    pauseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePause();
+    });
 
-            const interval = setInterval(() => {
-                count--;
-                if (count > 0) {
-                    el.textContent = count;
-                    el.classList.remove('fade-in');
-                    void el.offsetWidth; // trigger reflow
-                    el.classList.add('fade-in');
-                } else {
-                    clearInterval(interval);
-                }
-            }, 1000);
+    // Also allow tap anywhere to pause (optional, can remove if annoying)
+    let tapTimer = null;
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('#pause-btn')) return;
+        // Double-tap to pause anywhere
+        if (tapTimer) {
+            clearTimeout(tapTimer);
+            tapTimer = null;
+            togglePause();
+        } else {
+            tapTimer = setTimeout(() => { tapTimer = null; }, 300);
         }
+    });
 
-        function showNextMessage() {
-            const msgEl = document.getElementById('message-display');
-            if (messageIndex < messages.length) {
-                msgEl.textContent = messages[messageIndex];
-                msgEl.classList.remove('float-up');
-                void msgEl.offsetWidth;
-                msgEl.classList.add('float-up');
-                messageIndex++;
-                setTimeout(showNextMessage, MESSAGE_DISPLAY_TIME);
-            }
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
+    // ===================== HEART PARTICLES =====================
+    function initHeartParticles() {
+        heartParticles = [];
+        for (let i = 0; i < 80; i++) {
+            heartParticles.push({
+                x: Math.random() * w, y: Math.random() * h,
+                size: Math.random() * 5 + 1,
+                speedY: Math.random() * 1.2 + 0.2,
+                speedX: (Math.random() - 0.5) * 0.6,
+                opacity: Math.random() * 0.7 + 0.2,
+                color: ['#ff1493', '#ff69b4', '#ffb6c1', '#ffc0cb', '#ff85c2', '#ff99cc'][Math.floor(Math.random() * 6)]
+            });
         }
-
-        // Heart particles for final scene
-        function initHeartParticles() {
-            heartParticles = [];
-            for (let i = 0; i < 50; i++) {
-                heartParticles.push({
-                    x: Math.random() * w,
-                    y: Math.random() * h,
-                    size: Math.random() * 3 + 1,
-                    speedY: Math.random() * 2 + 0.5,
-                    speedX: (Math.random() - 0.5) * 1,
-                    opacity: Math.random(),
-                    color: ['#ff1493', '#ff69b4', '#ffb6c1', '#ffc0cb'][Math.floor(Math.random() * 4)]
-                });
-            }
-        }
-
-        function drawHeartParticles() {
-            heartParticles.forEach(p => {
-                ctx.globalAlpha = p.opacity;
-                ctx.fillStyle = p.color;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
-
+    }
+    function drawHeartParticles() {
+        heartParticles.forEach(p => {
+            ctx.globalAlpha = p.opacity;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+            if (!isPaused) {
                 p.y -= p.speedY;
                 p.x += p.speedX;
-                p.opacity -= 0.005;
-
-                if (p.y < 0 || p.opacity <= 0) {
-                    p.y = h + 10;
-                    p.x = Math.random() * w;
-                    p.opacity = 1;
+                p.opacity -= 0.002;
+                if (p.y < -10 || p.opacity <= 0) {
+                    p.y = h + 10; p.x = Math.random() * w;
+                    p.opacity = Math.random() * 0.7 + 0.2;
                 }
-            });
-            ctx.globalAlpha = 1;
-        }
-
-        // ===================== MAIN LOOP =====================
-        function drawMatrix() {
-            // Fade effect
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, w, h);
-
-            // If heart scene, make matrix more transparent
-            if (isHeartScene) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
-                ctx.fillRect(0, 0, w, h);
-            }
-
-            ctx.font = fontSize + 'px monospace';
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-
-                // Pink/magenta colors for love theme
-                const colors = ['#ff1493', '#ff69b4', '#ffb6c1', '#ff85c2', '#ff5da0', '#ff2d8a'];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-
-                ctx.fillStyle = color;
-
-                // Random brightness
-                const brightness = Math.random();
-                if (brightness > 0.9) {
-                    ctx.shadowColor = color;
-                    ctx.shadowBlur = 10;
-                } else {
-                    ctx.shadowBlur = 0;
-                }
-
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                // Reset drop
-                if (drops[i] * fontSize > h && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-
-                drops[i]++;
-            }
-
-            ctx.shadowBlur = 0;
-
-            if (isHeartScene) {
-                drawHeartParticles();
-            }
-        }
-
-        function gameLoop() {
-            drawMatrix();
-
-            // Scene management
-            const now = Date.now();
-            const elapsed = now - sceneStartTime;
-
-            if (currentScene < scenes.length - 1 && elapsed > scenes[currentScene].duration) {
-                currentScene++;
-                showScene(currentScene);
-            }
-
-            requestAnimationFrame(gameLoop);
-        }
-
-        // Start
-        showScene(0);
-        gameLoop();
-
-        // Add sparkle effects randomly
-        setInterval(() => {
-            if (Math.random() > 0.7) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'sparkle';
-                sparkle.style.left = Math.random() * 100 + '%';
-                sparkle.style.top = Math.random() * 100 + '%';
-                document.body.appendChild(sparkle);
-                setTimeout(() => sparkle.remove(), 1500);
-            }
-        }, 500);
-
-        // Click to advance scene (optional)
-        document.addEventListener('click', () => {
-            if (currentScene < scenes.length - 1) {
-                currentScene++;
-                showScene(currentScene);
             }
         });
-    </script>
-</body>
+        ctx.globalAlpha = 1;
+    }
+
+    // ===================== FLOATING PARTICLES (DOM) =====================
+    function createFloatParticle() {
+        const p = document.createElement('div');
+        p.className = 'float-particle';
+        const emojis = ['💕', '💖', '💗', '💘', '💝', '💞', '✨', '⭐'];
+        p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        p.style.left = Math.random() * 100 + '%';
+        p.style.fontSize = (Math.random() * 16 + 12) + 'px';
+        p.style.animationDuration = (Math.random() * 4 + 4) + 's';
+        p.style.opacity = Math.random() * 0.5 + 0.2;
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 8000);
+    }
+    setInterval(createFloatParticle, 800);
+
+    // ===================== PROGRESS BAR =====================
+    const progressFill = document.getElementById('progress-fill');
+    function updateProgress() {
+        if (isPaused) return;
+        const elapsed = Date.now() - sceneStartTime - totalPausedTime;
+        const duration = sceneDurations[currentScene] || 5000;
+        progressFill.style.width = Math.min((elapsed / duration) * 100, 100) + '%';
+    }
+
+    // ===================== MAIN LOOP =====================
+    function drawMatrix() {
+        ctx.fillStyle = isHeartScene ? 'rgba(0, 0, 0, 0.1)' : 'rgba(0, 0, 0, 0.04)';
+        ctx.fillRect(0, 0, w, h);
+        ctx.font = fontSize + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            const colors = ['#ff1493', '#ff69b4', '#ffb6c1', '#ff85c2', '#ff5da0', '#ff2d8a', '#ff99cc', '#ff77aa'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            ctx.fillStyle = color;
+            if (Math.random() > 0.94) {
+                ctx.shadowColor = color; ctx.shadowBlur = 14;
+            } else { ctx.shadowBlur = 0; }
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (!isPaused) {
+                if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        ctx.shadowBlur = 0;
+        if (isHeartScene) drawHeartParticles();
+    }
+
+    function gameLoop() {
+        drawMatrix();
+        if (!isPaused) {
+            updateProgress();
+            const now = Date.now();
+            const elapsed = now - sceneStartTime - totalPausedTime;
+            const duration = sceneDurations[currentScene] || 5000;
+
+            if (currentScene === 5) {
+                const msgElapsed = now - messageStartTime - totalPausedTime;
+                const msgIdx = Math.floor(msgElapsed / MESSAGE_TIME);
+                if (msgIdx > messageIndex && msgIdx < messages.length) {
+                    messageIndex = msgIdx;
+                    showMessage(messageIndex);
+                }
+            }
+
+            if (elapsed > duration && currentScene < sceneDurations.length - 1) {
+                currentScene++;
+                showScene(currentScene);
+            }
+        }
+        requestAnimationFrame(gameLoop);
+    }
+
+    // Start
+    showScene(0);
+    gameLoop();
+</script>
 </html>
