@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Girlfriend's Day, Olly ❤️</title>
+<meta name="description" content="A love letter to Olly, from Lewis." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Dancing+Script:wght@500;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+<canvas id="heartsCanvas" aria-hidden="true"></canvas>
+
+<!-- Loading screen -->
+<div class="loader" id="loader" role="status" aria-live="polite">
+  <div class="loader-heart">
+    <svg viewBox="0 0 32 29" width="46" height="46" aria-hidden="true">
+      <path d="M16 29C16 29 0 19.36 0 8.94C0 3.85 4.02 0 8.9 0C11.9 0 14.5 1.52 16 3.86C17.5 1.52 20.1 0 23.1 0C27.98 0 32 3.85 32 8.94C32 19.36 16 29 16 29Z"/>
+    </svg>
+  </div>
+  <p class="loader-text">opening our story<span class="dots"><span>.</span><span>.</span><span>.</span></span></p>
+</div>
+
+<!-- Music toggle -->
+<button class="music-toggle" id="musicToggle" aria-pressed="false" aria-label="Toggle background music">
+  <span class="music-icon">♪</span>
+</button>
+
+<!-- progress -->
+<div class="scroll-progress" aria-hidden="true"><div class="scroll-progress-fill" id="scrollFill"></div></div>
+
+<main>
+
+  <!-- 1. HERO -->
+  <section class="section hero" id="hero" aria-label="Welcome">
+    <div class="hero-glow hero-glow--a"></div>
+    <div class="hero-glow hero-glow--b"></div>
+    <p class="eyebrow reveal">a small website, for a big feeling</p>
+    <h1 class="hero-title" aria-label="Happy Girlfriend's Day">
+      <span class="title-line" data-line="1">Happy</span>
+      <span class="title-line" data-line="2">Girlfriend's<span class="heart-inline">❤️</span></span>
+      <span class="title-line" data-line="3">Day</span>
+    </h1>
+    <p class="hero-sub reveal">To the most amazing girl in my life, <br class="br-mobile"><span class="name-script">Olly.</span></p>
+    <button class="btn-begin reveal" id="beginBtn">
+      <span>Begin Our Story</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="scroll-hint" aria-hidden="true"><span></span></div>
+  </section>
+
+  <!-- 2. LOVE LETTER -->
+  <section class="section letter-section" id="letter" aria-label="Love Letter">
+    <p class="section-eyebrow reveal">01 — A letter, for you</p>
+    <div class="letter-paper reveal">
+      <div class="letter-seal" aria-hidden="true">L♡O</div>
+      <p class="letter-line" data-delay="0">My Dearest Olly,</p>
+      <p class="letter-line" data-delay="1">Every day with you feels like a beautiful adventure.</p>
+      <p class="letter-line" data-delay="2">You make ordinary moments unforgettable.</p>
+      <p class="letter-line" data-delay="3">Thank you for your kindness, your laughter, your love, and simply being you.</p>
+      <p class="letter-line" data-delay="4">Happy Girlfriend's Day.</p>
+      <p class="letter-line letter-emphasis" data-delay="5">I love you more than words can describe.</p>
+      <p class="letter-line letter-sign" data-delay="6">Forever Yours,<br><span class="name-script large">Lewis ❤️</span></p>
+    </div>
+  </section>
+
+  <!-- 3. REASONS -->
+  <section class="section reasons-section" id="reasons" aria-label="Reasons I Love You">
+    <p class="section-eyebrow reveal">02 — Reasons, among many</p>
+    <h2 class="section-title reveal">Why I Love You</h2>
+    <div class="reasons-grid">
+      <div class="reason-card reveal" style="--i:0"><span class="reason-icon">❤️</span><h3>Your Smile</h3><p>It's the first thing I look for, and the best thing I find.</p></div>
+      <div class="reason-card reveal" style="--i:1"><span class="reason-icon">❤️</span><h3>Your Kindness</h3><p>You make the world softer, just by being in it.</p></div>
+      <div class="reason-card reveal" style="--i:2"><span class="reason-icon">❤️</span><h3>Your Laugh</h3><p>My favourite sound, no contest.</p></div>
+      <div class="reason-card reveal" style="--i:3"><span class="reason-icon">❤️</span><h3>Your Heart</h3><p>Endlessly warm, endlessly generous.</p></div>
+      <div class="reason-card reveal" style="--i:4"><span class="reason-icon">❤️</span><h3>Your Support</h3><p>You believe in me even when I forget to.</p></div>
+      <div class="reason-card reveal" style="--i:5"><span class="reason-icon">❤️</span><h3>Your Soul</h3><p>Beautiful, in a way that has nothing to do with looking in a mirror.</p></div>
+    </div>
+  </section>
+
+  <!-- 5. TIMELINE -->
+  <section class="section timeline-section" id="timeline" aria-label="Our Timeline">
+    <p class="section-eyebrow reveal">03 — Our Story, so far</p>
+    <h2 class="section-title reveal">The Timeline</h2>
+    <div class="timeline">
+      <div class="timeline-track" aria-hidden="true"></div>
+      <button class="timeline-item reveal" data-open="t1" style="--i:0">
+        <span class="timeline-dot"></span>
+        <span class="timeline-label">We Met</span>
+      </button>
+      <button class="timeline-item reveal" data-open="t2" style="--i:1">
+        <span class="timeline-dot"></span>
+        <span class="timeline-label">First Conversation</span>
+      </button>
+      <button class="timeline-item reveal" data-open="t3" style="--i:2">
+        <span class="timeline-dot"></span>
+        <span class="timeline-label">First Date</span>
+      </button>
+      <button class="timeline-item reveal" data-open="t4" style="--i:3">
+        <span class="timeline-dot"></span>
+        <span class="timeline-label">Favourite Memories</span>
+      </button>
+      <button class="timeline-item reveal" data-open="t5" style="--i:4">
+        <span class="timeline-dot"></span>
+        <span class="timeline-label">Today</span>
+      </button>
+      <button class="timeline-item reveal" data-open="t6" style="--i:5">
+        <span class="timeline-dot"></span>
+        <span class="timeline-label">Forever</span>
+      </button>
+    </div>
+
+    <div class="timeline-modal" id="timelineModal" aria-hidden="true">
+      <div class="timeline-modal-backdrop" data-close></div>
+      <div class="timeline-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button class="modal-close" data-close aria-label="Close">&times;</button>
+        <p class="modal-eyebrow" id="modalEyebrow"></p>
+        <h3 id="modalTitle"></h3>
+        <p id="modalBody"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. GALLERY -->
+  <section class="section gallery-section" id="gallery" aria-label="Memory Gallery">
+    <p class="section-eyebrow reveal">04 — Memories, kept safe</p>
+    <h2 class="section-title reveal">Our Gallery</h2>
+    <div class="gallery-grid">
+      <button class="gallery-item reveal" style="--i:0" data-caption="The day it all began" data-hue="340">
+        <span class="gallery-placeholder">📷</span>
+      </button>
+      <button class="gallery-item reveal" style="--i:1" data-caption="That golden afternoon" data-hue="20">
+        <span class="gallery-placeholder">📷</span>
+      </button>
+      <button class="gallery-item reveal" style="--i:2" data-caption="Somewhere we got lost, happily" data-hue="280">
+        <span class="gallery-placeholder">📷</span>
+      </button>
+      <button class="gallery-item reveal" style="--i:3" data-caption="Us, being ridiculous" data-hue="200">
+        <span class="gallery-placeholder">📷</span>
+      </button>
+      <button class="gallery-item reveal" style="--i:4" data-caption="A quiet Sunday" data-hue="330">
+        <span class="gallery-placeholder">📷</span>
+      </button>
+      <button class="gallery-item reveal" style="--i:5" data-caption="One of my favourites" data-hue="10">
+        <span class="gallery-placeholder">📷</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 7. LOVE COUNTER -->
+  <section class="section counter-section" id="counter" aria-label="Love Counter">
+    <p class="section-eyebrow reveal light">05 — Counting, and still counting</p>
+    <h2 class="section-title reveal light">I've Loved You For</h2>
+    <div class="counter-grid reveal">
+      <div class="counter-box"><span class="counter-num" id="cDays">0</span><span class="counter-label">Days</span></div>
+      <div class="counter-box"><span class="counter-num" id="cHours">0</span><span class="counter-label">Hours</span></div>
+      <div class="counter-box"><span class="counter-num" id="cMinutes">0</span><span class="counter-label">Minutes</span></div>
+      <div class="counter-box"><span class="counter-num" id="cSeconds">0</span><span class="counter-label">Seconds</span></div>
+    </div>
+    <p class="counter-footnote reveal">and counting, always.</p>
+  </section>
+
+  <!-- 8. SURPRISE -->
+  <section class="section surprise-section" id="surprise" aria-label="Surprise">
+    <p class="section-eyebrow reveal">06 — One more thing</p>
+    <h2 class="section-title reveal">A Small Surprise</h2>
+    <button class="surprise-btn reveal" id="surpriseBtn">Click Me ❤️</button>
+    <p class="surprise-message" id="surpriseMessage" aria-live="polite"></p>
+  </section>
+
+  <!-- 9. FINAL -->
+  <section class="section final-section" id="final" aria-label="Closing">
+    <canvas id="finalCanvas" aria-hidden="true"></canvas>
+    <div class="final-content">
+      <p class="final-eyebrow reveal">Happy Girlfriend's Day</p>
+      <h2 class="final-name reveal">Olly <span class="heart-inline">❤️</span></h2>
+      <p class="final-sign reveal">Love Always,<br><span class="name-script large">Lewis</span></p>
+    </div>
+  </section>
+
+</main>
+
+<audio id="bgMusic" loop preload="none">
+  <source src="assets/music/romantic-theme.mp3" type="audio/mpeg">
+</audio>
+
+<script src="script.js"></script>
+</body>
+</html>
